@@ -1,0 +1,10 @@
+import RPi.GPIO as GPIO
+
+def cleanup():
+    try:
+        GPIO.cleanup()
+    except:
+        pass
+
+if __name__ == "__main__":
+    cleanup() 

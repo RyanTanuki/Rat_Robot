@@ -1,0 +1,166 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1, h2 {
+    color: #333;
+    text-align: center;
+}
+
+/* Settings Panel */
+.settings-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.settings-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Control Panel */
+.control-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.middle-row {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+/* Buttons */
+.btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.forward, .backward {
+    background-color: #4CAF50;
+    color: white;
+    width: 150px;
+}
+
+.left, .right {
+    background-color: #2196F3;
+    color: white;
+    width: 100px;
+}
+
+.stop {
+    background-color: #f44336;
+    color: white;
+    width: 100px;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Video Panel */
+.video-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+#videoStream {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* Video Background */
+.video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Put it behind everything */
+}
+
+#videoStream {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Make controls overlay on video */
+.slider-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* Joystick zones */
+.joystick-zone {
+    position: fixed;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    z-index: 10;
+}
+
+#left-joystick {
+    bottom: 50px;
+    left: 50px;
+}
+
+#right-joystick {
+    bottom: 50px;
+    right: 50px;
+} 

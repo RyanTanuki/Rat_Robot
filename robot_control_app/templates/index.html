@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robot Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.10.1/nipplejs.min.js"></script>
+</head>
+<body>
+    <div class="video-container">
+        <img id="videoStream" src="{{ stream_url }}" alt="Robot Camera Stream">
+    </div>
+
+    <div class="slider-container">
+        <div class="servo-slider">
+            <label>Servo 1</label>
+            <input type="range" id="servo1" min="0" max="180" value="90">
+        </div>
+        <div class="servo-slider">
+            <label>Servo 2</label>
+            <input type="range" id="servo2" min="0" max="180" value="90">
+        </div>
+        <div class="servo-slider">
+            <label>Servo 3</label>
+            <input type="range" id="servo3" min="0" max="180" value="90">
+        </div>
+        <div class="servo-slider">
+            <label>Servo 4</label>
+            <input type="range" id="servo4" min="0" max="180" value="90">
+        </div>
+    </div>
+
+    <div id="left-joystick" class="joystick-zone"></div>
+    <div id="right-joystick" class="joystick-zone"></div>
+
+    <script>
+        // Initialize joysticks
+        const leftJoystick = nipplejs.create({
+            zone: document.getElementById('left-joystick'),
+            mode: 'static',
+            position: { left: '50px', bottom: '50px' },
+            color: 'white',
+            size: 150
+        });
+
+        const rightJoystick = nipplejs.create({
+            zone: document.getElementById('right-joystick'),
+            mode: 'static',
+            position: { right: '50px', bottom: '50px' },
+            color: 'white',
+            size: 150
+        });
+
+        // Handle movement joystick
+        leftJoystick.on('move', (evt, data) => {
+            const angle = data.angle.radian;
+            const force = Math.min(data.force, 1.0);
+            
+            // Convert to tank drive
+            let left = 0, right = 0;
+            
+            // Forward/backward
+            const x = Math.cos(angle) * force;
+            const y = Math.sin(angle) * force;
+            
+            // Tank drive calculation
+            left = y + x;
+            right = y - x;
+            
+            // Clamp values
+            left = Math.max(-1, Math.min(1, left));
+            right = Math.max(-1, Math.min(1, right));
+            
+            fetch('/motor', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({left, right})
+            });
+        });
+
+        leftJoystick.on('end', () => {
+            fetch('/motor', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({left: 0, right: 0})
+            });
+        });
+
+        // Handle camera joystick
+        rightJoystick.on('move', (evt, data) => {
+            const angle = data.angle.degree;
+            const force = Math.min(data.force, 1.0);
+            
+            // Convert angle to servo positions
+            const x = Math.cos(data.angle.radian) * force;
+            const y = Math.sin(data.angle.radian) * force;
+            
+            // Map to servo angles (adjust ranges as needed)
+            const horizontalAngle = 90 + (x * 90);  // Servo 7
+            const verticalAngle = 90 + (y * 90);    // Servo 8
+            
+            fetch('/servo', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    servo: 7,
+                    angle: horizontalAngle
+                })
+            });
+            
+            fetch('/servo', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    servo: 8,
+                    angle: verticalAngle
+                })
+            });
+        });
+
+        // Handle arm servo sliders
+        for (let i = 1; i <= 4; i++) {
+            const slider = document.getElementById(`servo${i}`);
+            slider.addEventListener('input', () => {
+                fetch('/servo', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        servo: i,
+                        angle: parseInt(slider.value)
+                    })
+                });
+            });
+        }
+    </script>
+</body>
+</html> 

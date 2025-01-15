@@ -1,0 +1,57 @@
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+npm-debug.log
+node_modules
+build
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# JavaScript/Node.js cache and logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.DS_Store
+.cache/
+coverage/
+
+# VSCode and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+*.temp
+
+# Miscellaneous
+*.log
+*.out
+*.err

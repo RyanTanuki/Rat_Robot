@@ -1,0 +1,22 @@
+[ WARN:0@2.809] global ./modules/videoio/src/cap_gstreamer.cpp (1405) open OpenCV | GStreamer warning: Cannot query video position: status=0, value=-1, duration=-1
+/home/pi/work/python_src/xr_startmain.py:126: DeprecationWarning: setDaemon() is deprecated, set the daemon attribute instead
+  t.setDaemon(True)  # 将线程设置为守护线程
+well done!
+title:	XiaoRGEEK-raspberry pi-Python Src
+uri:	http://www.xiao-r.com
+email:	liuviking@xiaorgeek.com
+version:0.1.1
+summary:This Python Code  can be used on raspberry pi 3B/3B+,The definition of GPIO pin is based on XiaoRGEEK PWR.A53 series Driver BOARD
+gsettings set org.gnome.desktop.background picture-uri "file:/home/pi/work/python_src/XiaoRGEEK.jpg"
+
+
+....wifirobots start!...
+now bluetooth discoverable
+ * Serving Flask app 'xr_camera'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.68.80:8080
+Press CTRL+C to quit
+192.168.1.12 - - [28/Dec/2024 21:59:49] "GET /?action=stream HTTP/1.1" 200 -
