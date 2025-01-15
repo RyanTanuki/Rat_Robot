@@ -1,9 +1,17 @@
 #!/bin/bash
 
-# Setup network
+# Robot Control System Startup Script
+# ---------------------------------
+# Main startup script that initializes all components of the robot control system.
+# This script:
+# 1. Sets up the network
+# 2. Starts the video stream
+# 3. Initializes the robot control services
+
+# Setup network configuration
 /home/pi/work/setup_network.sh
 
-# Wait for network and ensure WiFi is connected
+# Wait for network connection and verify WiFi
 max_attempts=30
 attempt=0
 while [ $attempt -lt $max_attempts ]; do
@@ -15,11 +23,12 @@ while [ $attempt -lt $max_attempts ]; do
     sleep 2
 done
 
-# Start the video stream
+# Start the video streaming service
 /home/pi/work/start_stream.sh &
 
-# Start services
-sudo systemctl restart xr_robot
-sudo systemctl restart robot_control
+# Start robot control services
+# Restart services to ensure clean state
+sudo systemctl restart xr_robot        # Robot control service
+sudo systemctl restart robot_control   # Web interface service
 
 exit 0

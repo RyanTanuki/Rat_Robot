@@ -1,6 +1,15 @@
-# Remove the pin factory setting
-# import os
-# os.environ['GPIOZERO_PIN_FACTORY'] = 'pigpio'  # Remove or comment out this line
+"""
+Robot Control Flask Backend
+-------------------------
+Flask application that handles robot control commands and interfaces with the GPIO hardware.
+This service acts as the middleware between the web interface and the robot's hardware.
+
+Key Features:
+- Processes motor control commands
+- Manages servo positions
+- Handles GPIO initialization
+- Provides web interface endpoints
+"""
 
 from flask import Flask, render_template, request, jsonify
 import sys
@@ -11,14 +20,14 @@ import json
 import atexit
 import RPi.GPIO as GPIO
 
-# Add python_src to the Python path
+# Add python_src to the Python path for module imports
 sys.path.append(os.path.join(os.path.dirname(__file__), 'python_src'))
 
-# Import GPIO and motor control
+# Import local modules for hardware control
 import xr_gpio as gpio
 from xr_motor import RobotDirection
 
-# Configure logging
+# Configure logging with both file and console output
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -28,11 +37,12 @@ logging.basicConfig(
     ]
 )
 
+# Initialize Flask application
 app = Flask(__name__, 
-    template_folder=os.path.dirname(os.path.dirname(__file__)),  # Look in parent directory for templates
-    static_folder=os.path.dirname(os.path.dirname(__file__)))    # Look in parent directory for static files
+    template_folder=os.path.dirname(os.path.dirname(__file__)),  # Parent directory for templates
+    static_folder=os.path.dirname(os.path.dirname(__file__)))    # Parent directory for static files
 
-# Default robot settings
+# Robot configuration
 ROBOT_IP = "192.168.68.80"
 ROBOT_PORT = 2001
 STREAM_URL = f"http://{ROBOT_IP}:8080/?action=stream"
@@ -41,7 +51,18 @@ STREAM_URL = f"http://{ROBOT_IP}:8080/?action=stream"
 robot = RobotDirection()
 
 def send_command(command_dict):
-    """Send command to robot control script via TCP"""
+    """
+    Send command to robot control script via TCP socket.
+    
+    Args:
+        command_dict (dict): Command to send to the robot
+        
+    Returns:
+        dict: Response from the robot control script
+        
+    Raises:
+        Exception: If connection or command sending fails
+    """
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.connect(('localhost', 2001))
@@ -54,6 +75,16 @@ def send_command(command_dict):
 
 @app.route("/motor", methods=["POST"])
 def motor_control():
+    """
+    Handle motor control commands.
+    
+    Expects JSON payload with:
+    - left: float (-1 to 1) - Left motor speed
+    - right: float (-1 to 1) - Right motor speed
+    
+    Returns:
+        JSON response indicating command status
+    """
     try:
         data = request.get_json()
         left = float(data.get('left', 0))
@@ -93,6 +124,16 @@ def motor_control():
 
 @app.route("/servo", methods=["POST"])
 def servo_control():
+    """
+    Handle servo control commands.
+    
+    Expects JSON payload with:
+    - servo: int (1-8) - Servo ID to control
+    - angle: int (0-180) - Desired servo angle
+    
+    Returns:
+        JSON response indicating command status
+    """
     try:
         data = request.get_json()
         servo_id = int(data.get('servo'))
@@ -114,22 +155,31 @@ def servo_control():
         return jsonify({"status": "error", "message": str(e)})
 
 @app.route("/", methods=["GET"])
-@app.route("/robot_control.html", methods=["GET"])  # Add this route
+@app.route("/robot_control.html", methods=["GET"])
 def index():
-    return render_template("robot_control.html",    # Change template name
+    """
+    Serve the main robot control interface.
+    
+    Returns:
+        Rendered HTML template with robot configuration
+    """
+    return render_template("robot_control.html",
                          ip=ROBOT_IP, 
                          port=ROBOT_PORT, 
                          stream_url=STREAM_URL)
 
 def cleanup():
-    """Cleanup GPIO resources"""
+    """
+    Cleanup function to release GPIO resources on shutdown.
+    Registered to run on application exit.
+    """
     try:
         GPIO.cleanup()
         logging.info("GPIO resources cleaned up")
     except Exception as e:
         logging.error(f"Cleanup error: {str(e)}")
 
-# Register cleanup function
+# Register cleanup function to run on exit
 atexit.register(cleanup)
 
 if __name__ == "__main__":
