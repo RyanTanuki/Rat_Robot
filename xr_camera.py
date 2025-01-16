@@ -1,16 +1,24 @@
 """
-Robot Camera Control Module
--------------------------
-Handles the robot's camera operations including initialization, 
-streaming, and frame processing.
+XiaoRGEEK Camera Control Module
+------------------------------
+Camera interface module for the XiaoRGEEK robot platform.
+Handles video streaming and camera control functions.
 
-This module provides the interface between the physical camera
-hardware and the web streaming service.
+Related Test Files:
+- test_camera.py: Tests the camera initialization and streaming
+- test_movement.py: Tests camera servo movement
+- test_command.py: Camera-related commands use this module
+
+Features:
+- Camera initialization and configuration
+- Video streaming for web interface
+- Frame capture and processing
+- Integration with robot services
 
 Dependencies:
-- OpenCV (cv2)
-- numpy
-- threading
+- OpenCV (cv2): Image capture and processing
+- numpy: Image data handling
+- threading: Async camera operations
 """
 
 import cv2
@@ -22,8 +30,11 @@ class Camera:
     """
     Camera control class for robot video streaming.
     
-    Handles camera initialization, frame capture, and processing
-    for the web interface video stream.
+    Used by test_camera.py to verify:
+    - Camera initialization
+    - Frame capture
+    - Streaming performance
+    - Service management
     """
 
     def __init__(self):

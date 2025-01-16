@@ -1,17 +1,25 @@
 """
-小R科技树莓派5 WiFi无线视频小车机器人驱动源码V2---马达相关功能
-作者:liuviking
-版权所有:小R科技(深圳市小二极客科技有限公司www.xiao-r.com) WIFI机器人网论坛 www.wifi-robots.com
-本代码可以自由修改，但禁止用作商业盈利目的！
-本代码已申请软件著作权保护，如有侵权一经发现立即起诉！
+XiaoRGEEK Motor Control Module
+-----------------------------
+High-level motor control interface for the XiaoRGEEK robot platform.
+Provides movement functions used by the test suite and main robot control.
+
+Related Test Files:
+- test_gpio.py: Tests the basic motor functions defined here
+- test_movement.py: Uses these movement functions for full robot control
+- test_command.py: Movement commands map to these functions
+
+Features:
+- Individual motor control (M1/M2 and M3/M4)
+- Speed control for left and right sides
+- Movement functions (forward, back, left, right)
+- LED status indication during movement
+
+Dependencies:
+- xr_gpio: Low-level GPIO control
+- xr_config: Robot configuration settings
 """
-"""
-商务合作微信:18126008008
-联系电话:0755-28915204
-@version: python3.7
-@Author  : liuviking
-@Time    :2023/05/07
-"""
+
 from builtins import float, object
 
 import os

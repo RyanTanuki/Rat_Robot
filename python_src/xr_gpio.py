@@ -14,23 +14,44 @@
 @Time    :2023/05/07
 """
 
+"""
+XiaoRGEEK GPIO Control Module
+----------------------------
+Core GPIO control module for the XiaoRGEEK robot platform. This module provides
+low-level GPIO control used by the test suite and other robot functions.
+
+Related Test Files:
+- test_gpio.py: Tests basic motor control functionality
+- test_movement.py: Uses these GPIO controls for robot movement
+- test_command.py: Commands ultimately use these GPIO functions
+
+Pin Definitions:
+- Motor control pins (ENA, ENB, IN1-4)
+- LED indicator pins
+- Infrared sensor pins
+- Ultrasonic sensor pins
+
+Dependencies:
+- gpiozero: Hardware abstraction library for GPIO control
+"""
+
 from gpiozero import LED as GPIO
 from gpiozero import PWMLED as PWM
 from gpiozero import DigitalInputDevice as INPUT_GPIO
 import time
 
-# LED灯引脚
-LED0 = 10
-LED1 = 9
-LED2 = 25
+# LED pin definitions
+LED0 = 10  # Status LED
+LED1 = 9   # Movement indicator LED  
+LED2 = 25  # Error indicator LED
 
-# 设置电机引脚
-ENA = 13  	# //L298使能A
-ENB = 20  	# //L298使能B
-IN1 = 19  	# //电机接口1
-IN2 = 16  	# //电机接口2
-IN3 = 21  	# //电机接口3
-IN4 = 26  	# //电机接口4
+# Motor control pin definitions
+ENA = 13   # L298 enable A - Left motor speed control
+ENB = 20   # L298 enable B - Right motor speed control
+IN1 = 19   # Left motor direction control 1
+IN2 = 16   # Left motor direction control 2
+IN3 = 21   # Right motor direction control 1
+IN4 = 26   # Right motor direction control 2
 
 # 设置超声波引脚
 ECHO = 5  	# 超声波接收脚位

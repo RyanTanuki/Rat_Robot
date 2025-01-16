@@ -1,5 +1,31 @@
 # coding:utf-8
 """
+XiaoRGEEK Robot Main Control Module
+----------------------------------
+Main control module for the XiaoRGEEK robot platform.
+Initializes and manages all robot subsystems.
+
+Related Test Files:
+- test_server.py: Tests the command server implemented here
+- test_command.py: Tests command handling
+- test_camera.py: Tests camera service management
+- test_movement.py: Tests movement control interface
+- test_gpio.py: Tests underlying GPIO functionality
+
+Features:
+- Robot service initialization
+- Command server (TCP/IP)
+- Movement control
+- Camera streaming
+- Servo control
+- System monitoring
+
+Dependencies:
+- All XR modules (gpio, motor, camera, etc)
+- Socket programming for command interface
+- Threading for concurrent operations
+"""
+"""
 小R科技树莓派5 WiFi无线视频小车机器人驱动源码V2
 作者:liuviking
 版权所有:小R科技(深圳市小二极客科技有限公司www.xiao-r.com) WIFI机器人网论坛 www.wifi-robots.com
@@ -45,6 +71,14 @@ import sys
 import socket  # Add this line
 
 class CommandHandler:
+	"""
+	Command processing class for robot control.
+	
+	Handles commands tested by:
+	- test_command.py: Basic command processing
+	- test_movement.py: Movement commands
+	- test_gpio.py: Motor control commands
+	"""
 	def __init__(self):
 		self.go = go
 		self.servo = Servo
@@ -108,6 +142,13 @@ class CommandHandler:
 			return json.dumps({"status": "error", "message": str(e)})
 
 def command_server(handler):
+	"""
+	TCP server for robot control commands.
+	
+	Tested by:
+	- test_server.py: Server initialization
+	- test_command.py: Command processing
+	"""
 	"""TCP server to handle commands from web interface"""
 	server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
