@@ -1,7 +1,29 @@
+"""
+Robot Command Test Module
+
+This module tests the robot's command interface by sending test commands
+over a TCP socket connection. It verifies both motor movement and servo
+control functionality.
+
+The test sends JSON-formatted commands to control:
+- Forward movement of the robot
+- Servo position adjustment
+"""
+
 import socket
 import json
 
 def send_command(command):
+    """
+    Sends a JSON command to the robot control server.
+    
+    Args:
+        command (dict): Command dictionary to be sent to the robot
+                       Expected format varies by command type
+                       
+    Prints the command being sent and the response received.
+    Handles connection errors gracefully.
+    """
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect(('localhost', 2001))

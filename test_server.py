@@ -1,7 +1,31 @@
+"""
+Server Connection Test Module
+
+This module tests the robot's server functionality by attempting to create
+and bind to the control port. It verifies that the server can properly
+initialize and bind to the required network port.
+
+Tests:
+- Socket creation
+- Port binding (2001)
+- Socket cleanup
+"""
+
 import socket
 import json
 
 def test_server():
+    """
+    Tests the server's ability to bind to the control port.
+    
+    Returns:
+        bool: True if binding successful, False otherwise
+        
+    The test:
+    1. Creates a socket with address reuse enabled
+    2. Attempts to bind to port 2001 on all interfaces
+    3. Closes the socket after successful binding
+    """
     # Create a server socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

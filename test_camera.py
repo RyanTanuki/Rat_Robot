@@ -1,10 +1,32 @@
+"""
+Camera Test Module
+
+This module provides comprehensive testing of the robot's camera functionality.
+It handles service management, camera initialization, and frame capture testing.
+
+Features:
+- Stops potentially conflicting robot services
+- Verifies camera device presence
+- Tests frame capture capabilities
+- Measures actual FPS performance
+- Saves a test frame for visual verification
+"""
+
 import cv2
 import time
 import os
 import subprocess
 
 def stop_robot_services():
-    """Stop services that might be using the camera"""
+    """
+    Stops any running robot services that might interfere with camera testing.
+    
+    Attempts to stop:
+    - xr_robot systemd service
+    - Any running instances of xr_startmain.py
+    
+    Warnings are logged if services cannot be stopped.
+    """
     print("Stopping robot services...")
     try:
         # Stop the robot service
@@ -16,6 +38,20 @@ def stop_robot_services():
         print(f"Warning: Failed to stop some services: {e}")
 
 def test_camera():
+    """
+    Performs a comprehensive test of the camera system.
+    
+    Test sequence:
+    1. Stops potential conflicting services
+    2. Verifies camera device presence
+    3. Initializes camera and prints properties
+    4. Captures 100 frames while measuring performance
+    5. Saves first frame as reference
+    6. Calculates and reports actual FPS
+    7. Restarts robot services after completion
+    
+    Results are printed to console, including FPS and timing data.
+    """
     # Stop other services first
     stop_robot_services()
     

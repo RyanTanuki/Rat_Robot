@@ -1,3 +1,15 @@
+"""
+GPIO and Motor Control Test Module
+
+This module tests the basic functionality of motor controls using GPIO pins.
+It performs a simple test of single motor movement to verify the motor
+control system is working correctly.
+
+Dependencies:
+    - xr_gpio: Custom GPIO control module
+    - xr_motor: Robot direction control module
+"""
+
 import sys
 import os
 import time
@@ -10,6 +22,18 @@ import xr_gpio as gpio
 from xr_motor import RobotDirection
 
 def test_single_motor():
+    """
+    Tests single motor functionality by controlling the left motor (M1/M2).
+    
+    The test sequence:
+    1. Initializes the robot direction control
+    2. Sets the left motor speed to 50%
+    3. Runs the motor forward for 2 seconds
+    4. Stops the motor
+    
+    Exceptions are caught and handled to ensure motors are stopped
+    even if the test fails.
+    """
     print("Testing single motor movement...")
     try:
         robot = RobotDirection()
